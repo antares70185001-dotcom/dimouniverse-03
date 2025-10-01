@@ -4,215 +4,85 @@
   <meta charset="UTF-8" />
   <title>디모 발명 카드</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+
   <style>
     :root { 
-      --main:#5cab6d;
-      --accent:#a5e6b8;
-      --bg:#f8fff9;
+      --main:#5cab6d; --accent:#a5e6b8; --bg:#f8fff9;
+      --shadow:0 12px 40px rgba(0,0,0,0.3);
     }
-    *{box-sizing:border-box}
-    body { font-family:"Arial",sans-serif; background:var(--bg); text-align:center; margin:0; padding:20px; }
-    .screen { display:none; } 
-    .active { display:block; }
-    video { width:780px; max-width:100%; border-radius:20px; margin:20px auto; display:block; box-shadow:0 12px 40px rgba(0,0,0,0.3); }
-    
-    .title { 
-      font-family:'Jua', sans-serif; 
-      font-size:58px; 
-      font-weight:bold; 
-      margin:15px 0; 
-      color:var(--main); 
-      text-shadow:2px 2px 6px rgba(0,0,0,0.2);
-    }
+    *{ box-sizing:border-box; }
+    body{ font-family:"Arial",sans-serif; background:var(--bg); text-align:center; margin:0; padding:20px; }
+    .screen{ display:none; }
+    .screen.active{ display:block; }
 
-    /* 설문 상단 제목 */
-    .section-title{
-      font-family:'Jua', sans-serif;
-      font-size:28px;
-      font-weight:700;
-      color:#2d4d38;
-      margin:10px auto 6px;
-      width:100%;
-      max-width:680px;
-      text-align:left;
-    }
-    
-    .start-btn{ margin:20px auto; background:var(--accent); border:none; padding:14px 32px; border-radius:30px; cursor:pointer; font-size:20px; font-weight:bold; color:#2d4d38; transition:all .3s ease; display:inline-block; box-shadow:0 6px 14px rgba(0,0,0,0.15);}
-    .start-btn:hover{ background:#8ed8a3; transform:scale(1.05); }
-    form{ background:#fff; border-radius:20px; padding:30px; display:flex; flex-direction:column; text-align:left; max-width:680px; width:100%; margin:20px auto; box-shadow:0 6px 20px rgba(0,0,0,0.1); border:3px solid var(--accent);}
+    /* 공통 버튼 */
+    .btn{ background:var(--accent); border:none; padding:14px 28px; border-radius:28px;
+          cursor:pointer; font-size:18px; font-weight:700; color:#1f3b2b; margin:12px; transition:.2s; }
+    .btn:hover{ background:#8ed8a3; transform:translateY(-1px); }
+
+    /* 비디오 */
+    video{ width:780px; max-width:100%; border-radius:20px; margin:20px auto; display:block; box-shadow:var(--shadow); }
+
+    /* 인트로 */
+    .title{ font-family:'Jua',sans-serif; font-size:58px; font-weight:800; margin:12px 0 10px; color:#5cab6d; }
+
+    /* 설문 */
+    .section-title{ font-family:'Jua',sans-serif; font-size:28px; font-weight:700; color:#2d4d38; margin:10px auto 6px; width:100%; max-width:680px; text-align:left; }
+    form{ background:#fff; border-radius:20px; padding:30px; display:flex; flex-direction:column; text-align:left; max-width:680px; width:100%; margin:20px auto; 
+          box-shadow:0 6px 20px rgba(0,0,0,0.08); border:3px solid var(--accent);}
     .form-group{ margin-bottom:20px; }
-    label{ font-weight:bold; font-size:17px; color:#000000; display:block; margin-bottom:8px; }
-    input,textarea,select{ width:100%; padding:12px; border-radius:10px; border:2px solid #d3f2db; font-size:15px; background:#fafffa; transition:border 0.3s, box-shadow 0.3s; }
-    input:focus,textarea:focus,select:focus{ outline:none; border:2px solid var(--main); box-shadow:0 0 8px rgba(92,171,109,0.3); }
-    #ideaForm button[type="submit"] { display:block; margin:20px auto 0 auto; }
+    label{ font-weight:bold; font-size:17px; color:#000; display:block; margin-bottom:8px; }
+    input,textarea,select{ width:100%; padding:12px; border-radius:10px; border:2px solid #d3f2db; font-size:15px; background:#fafffa; transition:border .2s, box-shadow .2s; }
+    input:focus,textarea:focus,select:focus{ outline:none; border:2px solid var(--main); box-shadow:0 0 8px rgba(92,171,109,.3); }
+    textarea{ min-height:110px; }
     .privacy-check{ display:flex; align-items:center; gap:8px; margin-top:10px; }
     .privacy-check input{ width:20px; height:20px; accent-color: var(--main); }
     .privacy-note{ font-size:13px; color:#333; background:#f3fff6; padding:12px; border-radius:10px; border:1px dashed var(--main); }
-    
-    /* 🎉 칭찬 카드 */
+
+    /* 결과 카드 */
     .celebration-card{
-      background:#ffffff;
-      border:3px solid var(--accent);
-      border-radius:20px;
-      padding:12px;
-      max-width:520px;
-      margin:0 auto 12px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.12);
-      position:relative;
-      width:100%;
-      text-align:left;
+      background:#ffffff; border:3px solid var(--accent); border-radius:20px; padding:16px 16px 64px;
+      max-width:720px; margin:12px auto; box-shadow:0 8px 24px rgba(0,0,0,.12); position:relative; width:100%; overflow:hidden;
     }
-    .banner{ 
-      font-family:'Jua', sans-serif; 
-      font-size:32px; 
-      font-weight:bold; 
-      color:var(--main); 
-      margin:0 0 8px 0;          
-      text-align:center; 
-      width:100%; 
-      text-shadow:2px 2px 6px rgba(0,0,0,0.25);
-    }
-    .card-body{ display:flex; align-items:center; gap:20px; width:100%; }
-    .dimo-left{ width:176px; height:auto; border-radius:16px; flex-shrink:0; align-self:center; }
-    .ratings-wrap{ flex:1; text-align:left; }
+    .banner{ font-family:'Jua',sans-serif; font-size:32px; font-weight:bold; color:var(--main);
+             margin:0 0 8px 0; text-align:center; width:100%; text-shadow:2px 2px 6px rgba(0,0,0,.15); }
+    .card-body{ display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:center; }
+    .dimo-left{ width:176px; height:auto; border-radius:16px; flex-shrink:0; align-self:center; object-fit:contain; margin-left:4px; }
+    .ratings-wrap{ flex:1; min-width:0; text-align:left; }
     .rating{ display:flex; justify-content:space-between; align-items:center; background:#f9fffb; border:2px solid #d3f2db; border-radius:10px; padding:8px 12px; margin:6px 0; white-space:nowrap; }
-    .rating h3{ margin:0; font-size:16px; font-weight:bold; color:#2d4d38; }
-    .stars { display:flex; gap:4px; }
-    .star { position:relative; font-size:28px; color:#d8d8d8; }
-    .star.full { color:#ffcc00; text-shadow:1px 1px 6px rgba(255,204,0,0.7);}
-    .star.half::before {
-      content:"★";
-      position:absolute;
-      left:0; top:0;
-      width:50%; overflow:hidden;
-      color:#ffcc00;
-      text-shadow:1px 1px 6px rgba(255,204,0,0.7);
-    }
-    .idea-info { 
-      margin-top:12px; 
-      margin-bottom:36px;        
-      font-size:20px; 
-      font-weight:bold; 
-      color:#333; 
-      text-align:center; 
-      background:#f9fffb; 
-      padding:10px 14px;         
-      border-radius:16px; 
-      border:2px solid #d3f2db; 
-      max-width:580px; 
-      margin-left:auto; 
-      margin-right:auto; 
-      line-height:1.8;
-    }
-    .idea-info strong { color: var(--main);}
-    
-    /* 🎯 스탬프 영역 */
-    #stampArea {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-    }
+    .rating h3{ margin:0; font-size:16px; font-weight:bold; color:var(--main); flex:1; white-space:nowrap; }
+    .stars{ display:flex; gap:4px; white-space:nowrap; font-size:26px; }
+    .star{ position:relative; color:#d8d8d8; }
+    .star.full{ color:#ffcc00; text-shadow:1px 1px 6px rgba(255,204,0,.7);}
+    .star.half::before{ content:"★"; position:absolute; left:0; top:0; width:50%; overflow:hidden; color:#ffcc00; text-shadow:1px 1px 6px rgba(255,204,0,.7); }
+    .idea-info{ margin-top:12px; margin-bottom:24px; font-size:18px; font-weight:bold; color:#333; text-align:center; background:#f9fffb; padding:10px 14px; 
+                border-radius:16px; border:2px solid #d3f2db; max-width:720px; margin-left:auto; margin-right:auto; line-height:1.8;
+                word-break:keep-all; overflow-wrap:anywhere; }
+    .idea-info strong{ color:var(--main); }
 
-    /* 로고(영문) */
+    /* 스탬프 영역 */
+    #stampArea{ position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; }
+
+    /* 하단 로고(영문) */
     .card-footer-logo{
-      position:absolute;
-      left:0; right:0; bottom:8px;
-      text-align:center;
-      font-size:22px;
-      font-weight:700;
-      letter-spacing:0.18em;
-      text-transform:uppercase;
-      color:#8aa0a6;
-      opacity:.8;
-      pointer-events:none;
-      user-select:none;
-    }
-
-    /* 📱 모바일 최적화 */
-    @media (max-width: 480px){
-      body { padding: 12px; }
-      .title { font-size: 36px; margin: 12px 0; }
-      .banner { font-size: 24px; }
-      .card-body { gap: 12px; }
-      .dimo-left { width: 132px; border-radius: 14px; }
-      .rating { padding: 6px 10px; margin: 5px 0; }
-      .rating h3 { font-size: 14px; }
-      .star { font-size: 22px; }
-      .idea-info { font-size: 16px; padding: 8px 12px; margin-bottom: 28px; }
-      .start-btn { padding: 12px 20px; font-size: 18px; }
-      .card-footer-logo { font-size:20px; bottom:6px; }
-      .section-title{ font-size:22px; max-width:92%; }
-    }
-
-    /* 로고 그라데이션 & 카드 여백 슬림 (원본 유지) */
-    .card-footer-logo{
-      font-family:'Baloo 2', cursive, sans-serif !important;
-      font-size:31px !important;
-      letter-spacing:0.12em !important;
-      text-transform:uppercase !important;
+      position:absolute; left:0; right:0; bottom:8px; text-align:center; font-size:22px; font-weight:700; letter-spacing:.18em;
+      text-transform:uppercase; color:#8aa0a6; opacity:.9; pointer-events:none; user-select:none;
+      font-family:'Baloo 2', cursive, sans-serif;
       background:linear-gradient(90deg,#5cab6d,#3c9d9b,#6a5acd);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      color:transparent !important;
-      text-align:center !important;
-      bottom:10px !important;
-      opacity:1 !important;
-    }
-    .celebration-card{ padding-bottom:56px !important; }
-    .banner{ margin:0 0 4px 0 !important; }
-    .card-body{ gap:16px !important; }
-    .rating{ padding:6px 10px !important; margin:4px 0 !important; } 
-    .idea-info{ margin-top:8px !important; margin-bottom:16px !important; padding:8px 12px !important; }
-    @media (max-width:480px){
-      .card-footer-logo{ font-size:28px !important; bottom:8px !important; }
-      .celebration-card{ padding-bottom:52px !important; }
-      .card-body{ gap:12px !important; }
-      .rating{ padding:5px 9px !important; margin:4px 0 !important; }
-      .idea-info{ margin-bottom:14px !important; }
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
     }
 
-    /* 스탬프 실감 애니메이션(원본 유지) */
-    .stamp-enter{
-      transform-origin:center;
-      mix-blend-mode:multiply;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,.10));
-      animation:
-        stamp-pop 520ms cubic-bezier(.18,1.4,.22,1) forwards,
-        ink-fade 1200ms ease-out forwards;
-    }
+    /* 스탬프 애니메이션 */
+    .stamp-enter{ transform-origin:center; mix-blend-mode:multiply; filter: drop-shadow(0 6px 12px rgba(0,0,0,.10));
+      animation: stamp-pop 520ms cubic-bezier(.18,1.4,.22,1) forwards, ink-fade 1200ms ease-out forwards; }
     @keyframes stamp-pop{
-      0%   { opacity:0; transform: translateY(-16px) scale(1.35) rotate(var(--r,-4deg)); filter: blur(1px) drop-shadow(0 24px 36px rgba(0,0,0,.18)); }
-      65%  { opacity:1; transform: translateY(0)     scale(0.97) rotate(var(--r,-4deg)); filter: drop-shadow(0 10px 18px rgba(0,0,0,.14)); }
-      100% {             transform: scale(1)          rotate(var(--r,-4deg));            filter: drop-shadow(0 6px 12px rgba(0,0,0,.10)); }
+      0%{ opacity:0; transform: translateY(-16px) scale(1.35) rotate(var(--r,-4deg)); filter: blur(1px) drop-shadow(0 24px 36px rgba(0,0,0,.18)); }
+      65%{ opacity:1; transform: translateY(0) scale(.97) rotate(var(--r,-4deg)); filter: drop-shadow(0 10px 18px rgba(0,0,0,.14)); }
+      100%{ transform: scale(1) rotate(var(--r,-4deg)); filter: drop-shadow(0 6px 12px rgba(0,0,0,.10)); }
     }
-    @keyframes ink-fade{ from{filter:saturate(1.15) contrast(1.1);} to{filter:saturate(1) contrast(1);} }
-
-    /* 인트로 제목 안전 리셋 + 조건부 그라데이션(원본 유지) */
-    #introScreen .title{
-      font-family:'Baloo 2','Jua','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif !important;
-      font-weight:800 !important;
-      letter-spacing:.02em;
-      color:#5cab6d !important;
-      -webkit-text-fill-color:initial !important;
-      background:none !important;
-      text-shadow:none !important;
-      display:block !important;
-      margin-bottom:10px !important;
-    }
-    #introScreen .start-btn{
-      display:block !important;
-      margin:10px auto 0 !important;
-    }
-    .text-gradient-ok #introScreen .title{
-      background:linear-gradient(90deg,#5cab6d,#3c9d9b,#6a5acd) !important;
-      -webkit-background-clip:text !important; background-clip:text !important;
-      -webkit-text-fill-color:transparent !important;
-      color:transparent !important;
-    }
-
-    /* 카드 미세 흔들림만 사용 */
     .celebration-card.paper-jolt{ animation: paper-jolt 220ms cubic-bezier(.3,.7,.4,1) 1; }
     @keyframes paper-jolt{
       0%{ transform: translateY(0) rotate(0); }
@@ -220,42 +90,36 @@
       60%{ transform: translateY(0) rotate(0.15deg); }
       100%{ transform: translateY(0) rotate(0); }
     }
-  </style>
 
-  <script>
-    /* 그라데이션 지원 확인 (원문 유지) */
-    (function(){
-      try{
-        var ok = (window.CSS && CSS.supports) && (CSS.supports('-webkit-background-clip','text') || CSS.supports('background-clip','text'));
-        if(ok){
-          var test=document.createElement('div');
-          test.style.cssText='position:absolute;left:-9999px;top:-9999px;background:linear-gradient(#000,#fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;';
-          test.textContent='T';
-          document.documentElement.appendChild(test);
-          var cs=getComputedStyle(test);
-          var fill=cs.webkitTextFillColor || cs.color;
-          test.remove();
-          if(fill==='rgba(0, 0, 0, 0)' || fill==='transparent'){
-            document.documentElement.classList.add('text-gradient-ok');
-          }
-        }
-      }catch(e){}
-    })();
-  </script>
+    /* 모바일 보강(디자인 패치) */
+    .banner{ font-size: clamp(22px, 6.5vw, 32px); line-height:1.15; word-break:keep-all; }
+    .dimo-left{ width: clamp(120px, 32vw, 180px); }
+    .rating h3{ font-size: clamp(14px, 4.2vw, 18px); }
+    .stars{ font-size: clamp(18px, 5vw, 26px); flex-shrink:0; }
+    .idea-info{ font-size: clamp(14px, 4vw, 18px); }
+    @media (max-width: 480px){
+      body{ padding:12px; }
+      .title{ font-size: 36px; margin: 8px 0; }
+      .celebration-card{ padding:12px 12px 56px; }
+      .rating{ padding:6px 10px; gap:8px; }
+      .idea-info{ margin-bottom:14px; }
+    }
+  </style>
 </head>
 <body>
+
   <!-- 1) 인트로 -->
   <div id="introScreen" class="screen active">
     <h1 class="title">디모랑 함께하는 발명 놀이터 ✨</h1>
-    <button id="introBtn" class="start-btn">▶ 디모 만나러 가기</button>
+    <button id="goFormBtn" class="btn">▶ 디모 만나러 가기</button>
     <video autoplay muted loop playsinline webkit-playsinline>
       <source src="dimo.mp4" type="video/mp4">
     </video>
+    <!-- 인트로 오디오 (랜덤 1개 재생) -->
     <audio id="introAudio1" src="디모 인트로 인사.mp3" preload="auto"></audio>
     <audio id="introAudio2" src="디모인사01.mp3" preload="auto"></audio>
     <audio id="introAudio3" src="디모인사02.mp3" preload="auto"></audio>
     <audio id="introAudio4" src="디모인사03.mp3" preload="auto"></audio>
-    <p style="font-size:12px;color:#555;margin:4px 0 0">※ 소리가 안 들리면 기기 무음 해제 및 볼륨을 올려주세요.</p>
   </div>
 
   <!-- 2) 설문 -->
@@ -302,7 +166,7 @@
         <label>7. 혹시 디모가 연락드려야 할 수도 있으니 보호자 전화번호도 부탁해~ *</label>
         <input type="tel" id="parentPhone" placeholder="예: 01012345678" pattern="[0-9]{10,11}" required>
       </div>
-      
+
       <div class="form-group privacy-check">
         <input type="checkbox" id="consent" required>
         <label for="consent">개인정보 수집·이용에 동의합니다</label>
@@ -311,20 +175,21 @@
         ※ 입력한 개인정보는 이벤트 참여 확인 및 결과 전달을 위해서만 사용되며, 「개인정보 보호법」에 따라 안전하게 관리됩니다. 
         제3자에게 제공되지 않으며, 행사 종료 후 즉시 파기됩니다. 모든 절차는 반드시 보호자 동의 하에 진행됩니다.
       </p>
-      
-      <button type="submit" class="start-btn">디모에게 보내기</button>
+
+      <button type="submit" class="btn">디모에게 보내기</button>
     </form>
   </div>
 
   <!-- 3) 결과 -->
   <div id="resultScreen" class="screen">
-    <!-- 결과 화면에도 동일 영상 노출 -->
+    <!-- 결과 화면 상단 배경/루프 영상 -->
     <video autoplay muted loop playsinline webkit-playsinline>
       <source src="dimo.mp4" type="video/mp4">
     </video>
 
     <div id="celebrationArea" class="celebration-card">
       <h2 class="banner">🎉 축하해요! 나만의 아이디어 카드 🎉</h2>
+
       <div class="card-body">
         <img id="dimoImage" src="" alt="디모 캐릭터" class="dimo-left">
         <div class="ratings-wrap">
@@ -333,159 +198,191 @@
           <div class="rating"><h3>디모의 기술력 레벨</h3><div id="technical" class="stars"></div></div>
         </div>
       </div>
+
       <div id="ideaInfo" class="idea-info">
         👤 <strong>발명자:</strong> <span id="inventorName"></span> &nbsp;&nbsp; | &nbsp;&nbsp; 💡 <strong>내 발명품:</strong> <span id="ideaDisplay"></span>
       </div>
+
       <div class="card-footer-logo">DIMO UNIVERSE</div>
       <div id="stampArea"></div>
     </div>
-    <button id="shareBtn" class="start-btn">🎨 카드 저장하기</button>
+
+    <button id="shareBtn" class="btn">🎨 카드 저장하기</button>
+
+    <!-- 칭찬 오디오 (랜덤 1개 재생) -->
+    <audio id="compliment1" src="디모칭찬01.mp3" preload="auto"></audio>
+    <audio id="compliment2" src="디모칭찬02.mp3" preload="auto"></audio>
+    <audio id="compliment3" src="디모칭찬03.mp3" preload="auto"></audio>
+    <audio id="compliment4" src="디모칭찬04.mp3" preload="auto"></audio>
+    <audio id="compliment5" src="디모칭찬05.mp3" preload="auto"></audio>
+    <audio id="compliment6" src="디모 칭찬 메시지.mp3" preload="auto"></audio>
   </div>
 
-  <!-- 칭찬 오디오 -->
-  <audio id="compliment1" src="디모칭찬01.mp3" preload="auto"></audio>
-  <audio id="compliment2" src="디모칭찬02.mp3" preload="auto"></audio>
-  <audio id="compliment3" src="디모칭찬03.mp3" preload="auto"></audio>
-  <audio id="compliment4" src="디모칭찬04.mp3" preload="auto"></audio>
-  <audio id="compliment5" src="디모칭찬05.mp3" preload="auto"></audio>
-
+  <!-- Libs -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
   <script>
+    // 파일 목록
     const dimoImages = ["dimo01.png","dimo02.png","dimo03.png","dimo04.png"];
-    const introAudios = [
-      document.getElementById("introAudio1"),
-      document.getElementById("introAudio2"),
-      document.getElementById("introAudio3"),
-      document.getElementById("introAudio4")
-    ];
-    const complimentAudios = [
-      document.getElementById("compliment1"),
-      document.getElementById("compliment2"),
-      document.getElementById("compliment3"),
-      document.getElementById("compliment4"),
-      document.getElementById("compliment5")
-    ];
 
-    // ▶ 인트로: 오디오 끝난 후 2초 뒤 전환 + 실패 폴백 2초 + 10초 가드
-    let introLocked = false;
-    document.getElementById("introBtn").addEventListener("click", ()=>{
-      if (introLocked) return;
-      introLocked = true;
-      const move = ()=>{ document.getElementById("introScreen").classList.remove("active"); document.getElementById("formScreen").classList.add("active"); };
-      const guard = setTimeout(move, 10000);
+    // 인트로 로직: 버튼 클릭 시 랜덤 오디오 재생 → 끝나면 2초 뒤 설문으로
+    (function setupIntro(){
+      const btn = document.getElementById('goFormBtn');
+      const introScreen = document.getElementById('introScreen');
+      const formScreen  = document.getElementById('formScreen');
 
-      const audio = introAudios[Math.floor(Math.random()*introAudios.length)];
-      try{
-        audio.currentTime=0; audio.muted=false; audio.volume=1.0;
-        const p = audio.play();
-        if (p && typeof p.then==='function'){
-          p.then(()=>{
-            audio.onended = ()=>{ clearTimeout(guard); setTimeout(move, 2000); };
-          }).catch(()=>{ clearTimeout(guard); setTimeout(move, 2000); });
-        } else {
-          audio.onended = ()=>{ clearTimeout(guard); setTimeout(move, 2000); };
+      const introAudios = ["introAudio1","introAudio2","introAudio3","introAudio4"]
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+
+      let locked = false;
+      btn.addEventListener('click', () => {
+        if (locked) return;
+        locked = true;
+        btn.disabled = true; btn.style.opacity = .7; btn.style.cursor = 'default';
+
+        const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+        const audio = introAudios.length ? pick(introAudios) : null;
+
+        // 10초 가드(모바일 자동재생 제한 대비)
+        const GUARD_MS = 10000;
+        let guard = setTimeout(() => gotoForm(), GUARD_MS);
+
+        function gotoForm(){
+          clearTimeout(guard);
+          introScreen.classList.remove('active');
+          formScreen.classList.add('active');
         }
-      }catch(_){ clearTimeout(guard); setTimeout(move, 2000); }
-    });
 
-    function renderRandomStars(id){
-      const el=document.getElementById(id);
-      // 3.5~5.0 사이 하프 스타 포함 (원문 로직 유지)
-      let score = (Math.floor((Math.random() * ((5-3.5)*2+1)) + 7) / 2);
-      let html="";
-      for(let i=1;i<=5;i++){
-        if(score >= i){ html += "<span class='star full'>★</span>"; }
-        else if(score >= i-0.5){ html += "<span class='star half'>★</span>"; }
-        else { html += "<span class='star'>★</span>"; }
-      }
-      el.innerHTML = html;
-    }
+        if (!audio){
+          // 오디오가 없으면 2.5초 후 폼으로
+          setTimeout(gotoForm, 2500);
+          return;
+        }
 
-    function fireConfetti(duration=2000){ 
-      const end=Date.now()+duration; 
-      (function frame(){ 
-        confetti({particleCount:5,startVelocity:30,spread:360,origin:{x:Math.random(),y:Math.random()-0.2}}); 
-        if(Date.now()<end) requestAnimationFrame(frame); 
-      })(); 
-    }
-
-    // 카드 저장
-    document.getElementById("shareBtn").addEventListener("click", function(){
-      const card = document.getElementById("celebrationArea");
-      html2canvas(card, { scale: window.devicePixelRatio || 1 }).then(canvas => {
-        const link=document.createElement("a");
-        link.href=canvas.toDataURL("image/png");
-        link.download="dimo_card.png";
-        link.click();
+        try{
+          audio.currentTime = 0;
+          audio.muted = false;
+          const p = audio.play();
+          if (p && typeof p.then === 'function'){
+            p.then(() => {
+              // 정상 재생 시작 → 끝나면 2초 후 전환
+              audio.onended = () => setTimeout(gotoForm, 2000);
+              // 백업 타이머(오디오 길이 + 2.5s)
+              const backup = Math.max(GUARD_MS, ((audio.duration || 0)*1000)+2500);
+              clearTimeout(guard);
+              guard = setTimeout(gotoForm, backup);
+            }).catch(() => {
+              // 실패시에도 가드가 폴백 처리
+            });
+          }else{
+            // 레거시 브라우저
+            audio.onended = () => setTimeout(gotoForm, 2000);
+          }
+        }catch(e){
+          // 예외 발생해도 가드가 폴백 처리
+        }
       });
-    });
+    })();
 
-    // 제출 → 결과
-    document.getElementById("ideaForm").addEventListener("submit", function(e){ 
-      e.preventDefault(); 
-      // 결과 화면으로 전환 및 데이터 바인딩
-      document.getElementById("formScreen").classList.remove("active");
-      document.getElementById("resultScreen").classList.add("active");
+    // 설문 제출 → 결과 화면 조립
+    (function setupForm(){
+      const formScreen = document.getElementById('formScreen');
+      const resultScreen = document.getElementById('resultScreen');
 
-      const randomImg = dimoImages[Math.floor(Math.random()*dimoImages.length)];
-      document.getElementById("dimoImage").src = randomImg;
-      document.getElementById("inventorName").innerText = document.getElementById("nickname").value;
-      document.getElementById("ideaDisplay").innerText = document.getElementById("ideaName").value;
+      const inventorName = document.getElementById('inventorName');
+      const ideaDisplay  = document.getElementById('ideaDisplay');
+      const dimoImage    = document.getElementById('dimoImage');
+      const stampArea    = document.getElementById('stampArea');
 
-      // 별점은 약간의 지연을 두고 순차 출력(원래 맛 살리기)
-      setTimeout(()=>{
-        ["creativity","feasibility","technical"].forEach(id=>renderRandomStars(id));
-        
-        setTimeout(()=>{ fireConfetti(2000); },3000);
+      function renderRandomStars(id){
+        const el = document.getElementById(id);
+        // 3.5 ~ 5.0 사이 0.5단위
+        const score = Math.round((3.5 + Math.random()*1.5) * 2) / 2;
+        let html = "";
+        for (let i=1;i<=5;i++){
+          if (score >= i) html += "<span class='star full'>★</span>";
+          else if (score >= i-0.5) html += "<span class='star half'>★</span>";
+          else html += "<span class='star'>★</span>";
+        }
+        el.innerHTML = html;
+      }
 
-        const compliment = complimentAudios[Math.floor(Math.random()*complimentAudios.length)];
-        compliment.currentTime = 0;
-        compliment.play().catch(()=>{});
+      // 칭찬 오디오들(존재하는 것만 사용)
+      const complimentAudios = ["compliment1","compliment2","compliment3","compliment4","compliment5","compliment6"]
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
 
+      // 축포
+      function fireConfetti(duration=2000){
+        const end = Date.now() + duration;
+        (function frame(){
+          confetti({particleCount:5,startVelocity:30,spread:360,origin:{x:Math.random(),y:Math.random()-0.2}});
+          if (Date.now() < end) requestAnimationFrame(frame);
+        })();
+      }
+
+      document.getElementById('ideaForm').addEventListener('submit', (e)=>{
+        e.preventDefault();
+
+        // 데이터 바인딩
+        inventorName.textContent = document.getElementById('nickname').value;
+        ideaDisplay.textContent  = document.getElementById('ideaName').value;
+
+        // 랜덤 디모 이미지
+        dimoImage.src = dimoImages[Math.floor(Math.random()*dimoImages.length)];
+
+        // 별점
+        ["creativity","feasibility","technical"].forEach(renderRandomStars);
+
+        // 화면 전환
+        formScreen.classList.remove('active');
+        resultScreen.classList.add('active');
+
+        // 칭찬 오디오 랜덤
+        const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+        const compliment = complimentAudios.length ? pick(complimentAudios) : null;
+        if (compliment){
+          try{ compliment.currentTime = 0; compliment.play().catch(()=>{}); }catch(_){}
+        }
+
+        // 설명 길이에 따라 스탬프(공백 제외 30자 이상)
         setTimeout(()=>{
-          const stampArea = document.getElementById("stampArea");
-          const card = document.getElementById("celebrationArea");
-          const detail = document.getElementById("ideaDetail").value || "";
-          const pureLen = detail.replace(/\s/g, "").length;
-
-          if (pureLen >= 30) {
-            const stampSize = 132;
-            const offset = 24;
-            const posX = card.clientWidth  - stampSize - offset;
-            const posY = offset;
-
-            stampArea.innerHTML = `
-              <img src="디모스탬프01.png" alt="스탬프"
-                   style="position:absolute; left:${posX}px; top:${posY}px; width:${stampSize}px;">`;
-          } else {
+          const detail = (document.getElementById('ideaDetail').value || "").replace(/\s/g,"");
+          if (detail.length >= 30){
+            // 카드 우측 상단 자연스러운 위치
+            const card = document.getElementById('celebrationArea');
+            const size = 132, offset = 24;
+            const posX = card.clientWidth - size - offset, posY = offset;
+            stampArea.innerHTML = `<img src="디모스탬프01.png" alt="스탬프" style="position:absolute;left:${posX}px;top:${posY}px;width:${size}px;">`;
+          }else{
             stampArea.innerHTML = "";
           }
-        },2000);
+          // 등장 애니 + 살짝 흔들림
+          const img = stampArea.querySelector('img');
+          if (img){ img.style.setProperty('--r',(Math.random()*8-4).toFixed(1)+'deg'); img.classList.add('stamp-enter');
+            const card = document.getElementById('celebrationArea'); card.classList.add('paper-jolt'); setTimeout(()=>card.classList.remove('paper-jolt'),240);
+          }
+        }, 1600);
 
-      },2000);
-    });
+        // 축하 콘페티(살짝 딜레이)
+        setTimeout(()=> fireConfetti(2000), 800);
+      });
+    })();
 
-    // 스탬프 애니메이션(원문 유지)
-    (function(){
-      const area = document.getElementById('stampArea');
-      const card = document.getElementById('celebrationArea');
-      if(!area || !card) return;
-
-      function decorate(img){
-        img.style.setProperty('--r', (Math.random()*8 - 4).toFixed(1) + 'deg');
-        img.classList.add('stamp-enter');
-        card.classList.add('paper-jolt');
-        setTimeout(()=> card.classList.remove('paper-jolt'), 240);
-      }
-      const mo = new MutationObserver(muts=>{
-        muts.forEach(m=>{
-          m.addedNodes && m.addedNodes.forEach(n=>{
-            if(n.tagName === 'IMG'){ requestAnimationFrame(()=>decorate(n)); }
-          });
+    // 카드 저장
+    (function setupSave(){
+      const btn = document.getElementById('shareBtn');
+      btn.addEventListener('click', ()=>{
+        const card = document.getElementById('celebrationArea');
+        html2canvas(card, { scale: window.devicePixelRatio || 1 }).then(canvas=>{
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = 'dimo_card.png';
+          link.click();
         });
       });
-      mo.observe(area, { childList:true });
     })();
   </script>
 </body>
